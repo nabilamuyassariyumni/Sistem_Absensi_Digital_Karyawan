@@ -8,100 +8,121 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #f5f6fa;
-        }
-
-        .sidebar {
-            min-height: 100vh;
-            background: #212529;
-        }
-
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            padding: 12px;
-        }
-
-        .sidebar a:hover {
-            background: #343a40;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <body>
 
-    <div class="container-fluid">
-        <div class="row">
+    <div class="main-wrapper">
 
-            <!-- Sidebar -->
-            <div class="col-md-2 sidebar">
+        <!-- Sidebar -->
+        <div class="sidebar">
 
-                <h4 class="text-white text-center py-3">
-                    SIAD
-                </h4>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="bi bi-building"></i>
+                </div>
 
-                <a href="/">
-                    Dashboard
-                </a>
-
-                <a href="{{ route('employees.index') }}">
-                    Data Karyawan
-                </a>
-
-                <a href="{{ route('attendances.index') }}">
-                    Absensi
-                </a>
-
-                <a href="{{ route('attendances.monthly-report') }}">
-                    Laporan
-                </a>
-
+                <div>
+                    <h6 class="mb-0 text-white">SIAD</h6>
+                    <small class="text-secondary">
+                        Sistem Absensi
+                    </small>
+                </div>
             </div>
 
-            <!-- Content -->
-            <div class="col-md-10">
+            <ul class="nav-menu">
 
-                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-3">
-                    <div class="container-fluid">
-                        <span class="navbar-brand">
-                            Sistem Absensi Digital
-                        </span>
-                    </div>
-                </nav>
+                <li>
+                    <a href="/" class="{{ request()->is('/') ? 'active' : '' }}">
+                        <i class="bi bi-house-door"></i>
+                        Dashboard
+                    </a>
+                </li>
 
-                <div class="content">
+                <li>
+                    <a href="{{ route('employees.index') }}"
+                        class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
+                        <i class="bi bi-people"></i>
+                        Data Karyawan
+                    </a>
+                </li>
 
-                    @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                    @endif
+                <li>
+                    <a href="{{ route('attendances.index') }}"
+                        class="{{ request()->routeIs('attendances.index') ? 'active' : '' }}">
+                        <i class="bi bi-calendar-check"></i>
+                        Data Absensi
+                    </a>
+                </li>
 
-                    @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                    @endif
+                <li>
+                    <a href="{{ route('attendances.monthly-report') }}"
+                        class="{{ request()->routeIs('attendances.monthly-report') ? 'active' : '' }}">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Laporan Bulanan
+                    </a>
+                </li>
 
-                    @yield('content')
+                <li>
+                    <a href="#">
+                        <i class="bi bi-clock-history"></i>
+                        Rekap Lembur
+                    </a>
+                </li>
 
-                </div>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-gear"></i>
+                        Pengaturan
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="sidebar-footer">
+
+                <a href="#" class="logout-btn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
 
             </div>
 
         </div>
+
+        <!-- Content -->
+        <div class="main-content">
+
+            <nav class="topbar">
+                <h4>Sistem Absensi Digital</h4>
+
+                <div class="user-info">
+                    <i class="bi bi-person-circle"></i>
+                    Admin HR
+                </div>
+            </nav>
+
+            <div class="content">
+
+                @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+                @endif
+
+                @yield('content')
+
+            </div>
+
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

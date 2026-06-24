@@ -2,120 +2,148 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Data Karyawan</h3>
+<div class="page-header mb-4">
+
+    <div>
+        <h2 class="page-title">Data Karyawan</h2>
+        <p class="page-subtitle">
+            Kelola data seluruh karyawan perusahaan
+        </p>
+    </div>
 
     <a href="{{ route('employees.create') }}" class="btn btn-primary">
-        + Tambah Karyawan
+        <i class="bi bi-plus-circle me-1"></i>
+        Tambah Karyawan
     </a>
+
 </div>
 
-<div class="card">
+<div class="card employee-card border-0 shadow-sm">
+
     <div class="card-body">
 
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Foto</th>
-                    <th>ID Karyawan</th>
-                    <th>Nama</th>
-                    <th>Departemen</th>
-                    <th>Jabatan</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th width="180">Aksi</th>
-                </tr>
-            </thead>
+        <div class="table-responsive">
 
-            <tbody>
+            <table class="table align-middle employee-table">
 
-                @forelse($employees as $employee)
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Foto</th>
+                        <th>ID Karyawan</th>
+                        <th>Nama</th>
+                        <th>Departemen</th>
+                        <th>Jabatan</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th width="180">Aksi</th>
+                    </tr>
+                </thead>
 
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
+                <tbody>
 
-                    <td>
-                        @if($employee->photo)
-                        <img
-                            src="{{ asset('uploads/employees/'.$employee->photo) }}"
-                            width="60"
-                            height="60"
-                            class="rounded">
-                        @else
-                        <span class="badge bg-secondary">
-                            No Photo
-                        </span>
-                        @endif
-                    </td>
+                    @forelse($employees as $employee)
 
-                    <td>{{ $employee->employee_id }}</td>
+                    <tr>
 
-                    <td>{{ $employee->name }}</td>
+                        <td>{{ $loop->iteration }}</td>
 
-                    <td>{{ $employee->department }}</td>
+                        <td>
 
-                    <td>{{ $employee->position }}</td>
+                            @if($employee->photo)
 
-                    <td>{{ $employee->email }}</td>
+                            <img
+                                src="{{ asset('uploads/employees/'.$employee->photo) }}"
+                                width="50"
+                                height="50"
+                                class="employee-photo">
 
-                    <td>
-                        @if($employee->status == 'active')
-                        <span class="badge bg-success">
-                            Active
-                        </span>
-                        @else
-                        <span class="badge bg-danger">
-                            Inactive
-                        </span>
-                        @endif
-                    </td>
+                            @else
 
-                    <td>
+                            <span class="badge bg-secondary">
+                                No Photo
+                            </span>
+
+                            @endif
+
+                        </td>
+
+                        <td>{{ $employee->employee_id }}</td>
+
+                        <td class="fw-semibold">
+                            {{ $employee->name }}
+                        </td>
+
+                        <td>{{ $employee->department }}</td>
+
+                        <td>{{ $employee->position }}</td>
+
+                        <td>{{ $employee->email }}</td>
+
+                        <td>
+
+                            @if($employee->status == 'active')
+
+                            <span class="badge status-active">
+                                Active
+                            </span>
+
+                            @else
+
+                            <span class="badge status-inactive">
+                                Inactive
+                            </span>
+
+                            @endif
+
+                        </td>
+
+                        <td>
 
                             <a
-                            href="{{ route('employees.show', $employee->id) }}"
-                            class="btn btn-info btn-sm"
-                            title="Detail">
-                            <i class="bi bi-eye"></i>
-                        </a>
+                                href="{{ route('employees.show', $employee->id) }}"
+                                class="btn btn-light btn-sm"
+                                title="Detail">
+                                <i class="bi bi-eye"></i>
+                            </a>
 
-                        <a
-                            href="{{ route('employees.edit', $employee->id) }}"
-                            class="btn btn-warning btn-sm"
-                            title="Edit">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
+                            <a
+                                href="{{ route('employees.edit', $employee->id) }}"
+                                class="btn btn-warning btn-sm"
+                                title="Edit">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
 
-                        <form
-                            action="{{ route('employees.destroy', $employee->id) }}"
-                            method="POST"
-                            class="d-inline"
-                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                            @csrf
-                            @method('DELETE')
+                            <form action="{{ route('employees.destroy', $employee->id) }}"
+                                method="POST"
+                                class="d-inline"
+                                onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
 
-                            <button class="btn btn-danger btn-sm" title="Hapus">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
+                                @csrf
+                                @method('DELETE')
 
-                    </td>
-                </tr>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
 
-                @empty
+                            </form>
 
-                <tr>
-                    <td colspan="9" class="text-center">
-                        Belum ada data karyawan
-                    </td>
-                </tr>
+                        </td>
 
-                @endforelse
+                    </tr>
 
-            </tbody>
-        </table>
+                    @empty
 
+                    <tr>
+                        <td colspan="9" class="text-center py-4">
+                            Belum ada data karyawan
+                        </td>
+                    </tr>
+
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

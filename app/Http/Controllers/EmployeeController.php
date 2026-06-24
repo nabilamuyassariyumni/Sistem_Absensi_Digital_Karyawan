@@ -121,9 +121,21 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Employees $employee)
+    public function destroy(Employees $employee)
     {
+        // Hapus foto jika ada
+        if (
+            $employee->photo &&
+            file_exists(public_path('uploads/employees/' . $employee->photo))
+        ) {
+            unlink(public_path('uploads/employees/' . $employee->photo));
+        }
+
+        // Hapus data karyawan
         $employee->delete();
-        return redirect()->route('employees.index')->with('success', 'Data karyawan berhasil dihapus.');
+
+        return redirect()
+            ->route('employees.index')
+            ->with('success', 'Data karyawan berhasil dihapus');
     }
 }
