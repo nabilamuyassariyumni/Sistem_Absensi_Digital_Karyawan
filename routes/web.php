@@ -1,22 +1,46 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('employees', EmployeeController::class);
-Route::resource('attendances', App\Http\Controllers\AttendanceController::class);
-Route::get('/attendances', [AttendanceController::class, 'index'])
-    ->name('attendances.index');
+Route::get('/login', [AuthController::class, 'loginForm'])
+    ->name('login');
 
-Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn'])
-    ->name('attendances.checkin');
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.post');
 
-Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut'])
-    ->name('attendances.checkout');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 
-Route::get('attendances-report', [AttendanceController::class, 'monthlyReport'])->name('attendances.monthly-report');
+Route::middleware('role:hr')->group(function () {
+
+    Route::get('/dashboard/hr', [DashboardController::class, 'index'])
+        ->name('dashboard.hr');
+
+    Route::resource('employees', EmployeeController::class);
+});
+
+Route::middleware('role:employee')->group(function () {
+
+    Route::get('/dashboard/employee', [EmployeeDashboardController::class, 'index'])
+        ->name('dashboard.employee');
+
+    Route::resource('attendances', AttendanceController::class);
+
+    Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn'])
+        ->name('attendances.checkin');
+
+    Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut'])
+        ->name('attendances.checkout');
+
+    Route::get('/attendances-report', [AttendanceController::class, 'monthlyReport'])
+        ->name('attendances.monthly-report');
+});
