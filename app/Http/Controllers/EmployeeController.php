@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employees;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+
 
 class EmployeeController extends Controller
 {
@@ -32,7 +35,7 @@ class EmployeeController extends Controller
         $request->validate([
             'employee_id' => 'required|unique:employees',
             'name' => 'required',
-            'email' => 'nullable|email|unique:employees',
+            'email' => 'required|email|unique:employees|unique:users,email',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -51,7 +54,15 @@ class EmployeeController extends Controller
             $data['photo'] = $photoName;
         }
 
-        Employees::create($data);
+        $employee = Employees::create($data);
+
+        User::create([
+            'employee_id' => $employee->employee_id,
+            'name'        => $employee->name,
+            'email'       => $employee->email,
+            'password'    => Hash::make($employee->employee_id),
+            'role'        => 'employee',
+        ]);
 
         return redirect()
             ->route('employees.index')
@@ -81,10 +92,14 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employees $employee)
     {
+        $userId = User::where('employee_id', $employee->employee_id)
+            ->value('id');
+
         $request->validate([
             'employee_id' => 'required|unique:employees,employee_id,' . $employee->id,
             'name' => 'required',
-            'email' => 'nullable|email|unique:employees,email,' . $employee->id,
+            'email' => 'required|email|unique:employees,email,' . $employee->id .
+                '|unique:users,email,' . $userId,
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -111,7 +126,16 @@ class EmployeeController extends Controller
             $data['photo'] = $photoName;
         }
 
+        $oldEmployeeId = $employee->employee_id;
+
         $employee->update($data);
+
+        User::where('employee_id', $oldEmployeeId)
+            ->update([
+                'employee_id' => $request->employee_id,
+                'name'        => $request->name,
+                'email'       => $request->email,
+            ]);
 
         return redirect()
             ->route('employees.index')
@@ -131,6 +155,10 @@ class EmployeeController extends Controller
             unlink(public_path('uploads/employees/' . $employee->photo));
         }
 
+        User::where(
+            'employee_id',
+            $employee->employee_id
+        )->delete();
         // Hapus data karyawan
         $employee->delete();
 

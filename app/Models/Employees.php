@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Employees extends Model
@@ -21,5 +22,14 @@ class Employees extends Model
     public function attendances()
     {
         return $this->hasMany(Attendances::class, 'employee_id', 'employee_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(
+            User::class,
+            'employee_id',
+            'employee_id'
+        );
     }
 }
