@@ -1,114 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIAD - Sistem Absensi Digital</title>
+    <title>Sistem Absensi Karyawan</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
-<body>
+<body class="employee-theme">
 
     <div class="main-wrapper">
 
-        <!-- Sidebar -->
-        <div class="sidebar">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
 
             <div class="logo">
+
                 <div class="logo-icon">
-                    <i class="bi bi-building"></i>
+                    <i class="bi bi-people-fill"></i>
                 </div>
 
-                <div>
-                    <h6 class="mb-0 text-white">SIAD</h6>
-                    <small class="text-secondary">
-                        Sistem Absensi
-                    </small>
-                </div>
+                <span>Sistem Absensi</span>
+
             </div>
 
             <ul class="nav-menu">
 
                 <li>
-                    <a href="/dashboard/employee" class="{{ request()->is('dashboard/employee') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.employee') }}"
+                        class="{{ request()->routeIs('dashboard.employee') ? 'active' : '' }}">
+
                         <i class="bi bi-house-door"></i>
                         Dashboard
-                    </a>
-                </li>
 
-                <li>
-                    <a href="{{ route('employees.index') }}"
-                        class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
-                        <i class="bi bi-people"></i>
-                        Riwayat Absensi
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('attendances.index') }}"
-                        class="{{ request()->routeIs('attendances.index') ? 'active' : '' }}">
-                        <i class="bi bi-calendar-check"></i>
-                        Profil
+                        class="{{ request()->routeIs('attendances.*') ? 'active' : '' }}">
+
+                        <i class="bi bi-clock-history"></i>
+                        Riwayat Absensi
+
                     </a>
                 </li>
+
+                <li>
+                    <a href="#">
+                        <i class="bi bi-person"></i>
+                        Profil Saya
+                    </a>
+                </li>
+
             </ul>
 
             <div class="sidebar-footer">
 
-                <a href="#" class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
 
-                        <button type="submit" class="dropdown-item">
-                            Logout
-                        </button>
-                    </form>
-                </a>
+                    <button type="submit" class="logout-btn border-0 bg-transparent w-100 text-start">
+
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+
+                    </button>
+
+                </form>
 
             </div>
 
-        </div>
+        </aside>
 
-        <!-- Content -->
-        <div class="main-content">
-
-            <nav class="topbar">
-                <h4>Sistem Absensi Digital</h4>
-
-                <div class="user-info">
-                    <i class="bi bi-person-circle"></i>
-                    Karyawan
-                </div>
-            </nav>
+        <!-- CONTENT -->
+        <main class="main-content">
 
             <div class="content">
-
-                @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-
-                @if(session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-                @endif
-
                 @yield('content')
-
             </div>
 
-        </div>
+        </main>
 
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
