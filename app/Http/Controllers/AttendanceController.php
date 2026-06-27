@@ -10,7 +10,7 @@ class AttendanceController extends Controller
 {
     public function index()
     {
-        $employeeId = auth()->user()->employee->employee_id;
+        $employeeId = request()->user()->employee->employee_id;
 
         $todayAttendance = Attendances::where('employee_id', $employeeId)
             ->whereDate('attendance_date', today())
@@ -20,15 +20,34 @@ class AttendanceController extends Controller
             ->latest()
             ->get();
 
+        $hadir = Attendances::where('employee_id', $employeeId)
+            ->where('status', 'present')
+            ->count();
+
+        $terlambat = Attendances::where('employee_id', $employeeId)
+            ->where('status', 'late')
+            ->count();
+
+        $izin = Attendances::where('employee_id', $employeeId)
+            ->whereIn('status', ['leave'])
+            ->count();
+
+        $lembur = Attendances::where('employee_id', $employeeId)
+            ->sum('overtime_duration');
+
         return view('attendances.index', compact(
             'todayAttendance',
-            'attendances'
+            'attendances',
+            'hadir',
+            'terlambat',
+            'izin',
+            'lembur'
         ));
     }
 
     public function checkIn(Request $request)
     {
-        $employeeId = auth()->user()->employee->employee_id;
+        $employeeId = request()->user()->employee->employee_id;
 
         $attendance = Attendances::where('employee_id', $employeeId)
             ->whereDate('attendance_date', today())
@@ -38,13 +57,17 @@ class AttendanceController extends Controller
             return back()->with('error', 'Anda sudah check in hari ini');
         }
 
+        $status = now()->format('H:i:s') > '08:00:00'
+            ? 'late'
+            : 'present';
+
         Attendances::create([
             'employee_id' => $employeeId,
             'attendance_date' => today(),
             'check_in' => now()->format('H:i:s'),
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'status' => 'present',
+            'status' => $status,
         ]);
 
         return back()->with('success', 'Check In berhasil');
@@ -52,7 +75,7 @@ class AttendanceController extends Controller
 
     public function checkOut(Request $request)
     {
-        $employeeId = auth()->user()->employee->employee_id;
+        $employeeId = request()->user()->employee->employee_id;
 
         $attendance = Attendances::where('employee_id', $employeeId)
             ->whereDate('attendance_date', today())

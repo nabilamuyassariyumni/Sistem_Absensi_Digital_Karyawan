@@ -5,9 +5,9 @@
 <div class="employee-header d-flex justify-content-between align-items-center mb-4">
 
     <div>
-        <h1 class="fw-bold mb-1">
+        <h2 class="fw-bold mb-1">
             Selamat pagi, {{ auth()->user()->name }}
-        </h1>
+        </h2>
 
         <p class="text-muted mb-0">
             {{ now()->translatedFormat('l, d F Y') }}
@@ -37,7 +37,7 @@
         </h3>
 
         <span class="status-badge">
-            Hadir
+            {{ $todayAttendance?->status ?? 'Belum Absen' }}
         </span>
 
     </div>
@@ -58,7 +58,7 @@
                     </small>
 
                     <h2 class="fw-bold mb-0">
-                        08:02
+                        {{ $todayAttendance?->check_in ?? '-' }}
                     </h2>
                 </div>
 
@@ -80,7 +80,7 @@
                     </small>
 
                     <h2 class="fw-bold mb-0">
-                        -
+                        {{ $todayAttendance?->check_out ?? '-' }}
                     </h2>
                 </div>
 
@@ -90,10 +90,29 @@
 
     </div>
 
-    <button class="btn btn-checkout w-100 mt-4 blue">
-        <i class="bi bi-geo-alt"></i>
-        Check-Out Sekarang
-    </button>
+    <form
+        id="attendanceForm"
+        method="POST"
+        action="{{ !$todayAttendance
+        ? route('attendances.checkin')
+        : route('attendances.checkout') }}">
+
+        @csrf
+
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+
+        <button type="submit" class="btn btn-checkout w-100 mt-4 blue">
+
+            <i class="bi bi-geo-alt"></i>
+
+            {{ !$todayAttendance
+            ? 'Check In Sekarang'
+            : 'Check Out Sekarang' }}
+
+        </button>
+
+    </form>
 
 </div>
 
@@ -109,7 +128,7 @@
 
                 <div>
                     <p class="mb-1 text-muted">Hadir</p>
-                    <h2>18</h2>
+                    <h2>{{ $hadir }}</h2>
                 </div>
 
                 <div class="employee-stat-icon stat-green">
@@ -130,7 +149,7 @@
 
                 <div>
                     <p class="mb-1 text-muted">Terlambat</p>
-                    <h2>2</h2>
+                    <h2>{{ $terlambat }}</h2>
                 </div>
 
                 <div class="employee-stat-icon stat-orange">
@@ -150,8 +169,8 @@
             <div class="d-flex justify-content-between">
 
                 <div>
-                    <p class="mb-1 text-muted">Izin/Cuti</p>
-                    <h2>1</h2>
+                    <p class="mb-1 text-muted">Izin</p>
+                    <h2>{{ $izin }}</h2>
                 </div>
 
                 <div class="employee-stat-icon stat-purple">
@@ -172,7 +191,7 @@
 
                 <div>
                     <p class="mb-1 text-muted">Lembur</p>
-                    <h2>5j</h2>
+                    <h2>{{ number_format($lembur, 1) }}j</h2>
                 </div>
 
                 <div class="employee-stat-icon stat-blue">
@@ -210,43 +229,53 @@
             </tr>
         </thead>
         <tbody>
+            @foreach($attendances->take(7) as $attendance)
             <tr>
-                <td>20 Jun</td>
-                <td>08:00</td>
-                <td>17:05</td>
+
                 <td>
+                    {{ $attendance->attendance_date->format('d M') }}
+                </td>
+
+                <td>{{ $attendance->check_in ?? '-' }}</td>
+
+                <td>{{ $attendance->check_out ?? '-' }}</td>
+
+                <td>
+
+                    @if($attendance->status == 'present')
                     <span class="badge-custom badge-hadir">
                         Hadir
                     </span>
-                </td>
-                <td>5</td>
-            </tr>
 
-            <tr>
-                <td>19 Jun</td>
-                <td>08:21</td>
-                <td>17:00</td>
-                <td>
+                    @elseif($attendance->status == 'late')
                     <span class="badge-custom badge-terlambat">
                         Terlambat
                     </span>
-                </td>
-                <td>5</td>
-            </tr>
 
-            <tr>
-                <td>18 Jun</td>
-                <td>07:55</td>
-                <td>18:30</td>
-                <td>
-                    <span class="badge-custom badge-lembur">
-                        Lembur
-                    </span>
+                    @endif
+
                 </td>
-                <td>5</td>
+
+                <td>
+                    {{ $attendance->overtime_duration ?? 0 }} Jam
+                </td>
+
             </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
+
+<script>
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+        document.getElementById('latitude').value =
+            position.coords.latitude;
+
+        document.getElementById('longitude').value =
+            position.coords.longitude;
+
+    });
+</script>
 
 @endsection

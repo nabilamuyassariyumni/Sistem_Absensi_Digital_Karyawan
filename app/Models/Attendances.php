@@ -12,7 +12,7 @@ class Attendances extends Model
         'check_in',
         'check_out',
         'work_duration',
-        'overtime_hours',
+        'overtime_duration',
         'latitude',
         'longitude',
         'location',
