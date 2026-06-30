@@ -49,23 +49,24 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('attendances.index') }}"
-                        class="{{ request()->routeIs('attendances.index') ? 'active' : '' }}">
+                    <a href="{{ route('attendances.admin') }}"
+                        class="{{ request()->routeIs('attendances.admin') ? 'active' : '' }}">
                         <i class="bi bi-calendar-check"></i>
                         Data Absensi
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('attendances.monthly-report') }}"
-                        class="{{ request()->routeIs('attendances.monthly-report') ? 'active' : '' }}">
+                    <a href="{{ route('monthly.report') }}"
+                        class="{{ request()->routeIs('monthly.report') ? 'active' : '' }}">
                         <i class="bi bi-file-earmark-text"></i>
                         Laporan Bulanan
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('overtime.report') }}"
+                        class="{{ request()->routeIs('overtime.report') ? 'active' : '' }}">
                         <i class="bi bi-clock-history"></i>
                         Rekap Lembur
                     </a>

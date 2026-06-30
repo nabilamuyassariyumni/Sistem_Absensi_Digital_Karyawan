@@ -26,6 +26,27 @@ Route::middleware('role:hr')->group(function () {
         ->name('dashboard.hr');
 
     Route::resource('employees', EmployeeController::class);
+
+    Route::get('/overtime-report', [DashboardController::class, 'overtimeReport'])
+        ->name('overtime.report');
+
+    Route::get('/attendance-data', [DashboardController::class, 'attendanceData'])
+        ->name('attendances.admin');
+
+    Route::get('/monthly-report', [DashboardController::class, 'monthlyReport'])
+        ->name('monthly.report');
+
+    Route::get(
+        '/monthly-report/excel',
+        [DashboardController::class, 'exportExcel']
+    )
+        ->name('monthly.report.excel');
+
+    Route::get(
+        '/monthly-report/pdf',
+        [DashboardController::class, 'exportPdf']
+    )
+        ->name('monthly.report.pdf');
 });
 
 Route::middleware('role:employee')->group(function () {
