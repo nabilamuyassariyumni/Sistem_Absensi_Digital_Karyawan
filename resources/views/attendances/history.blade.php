@@ -1,35 +1,26 @@
-@extends('layouts.sidebar')
+@extends('layouts.employee')
 
 @section('content')
 
-<h2 class="page-title mb-4">Data Absensi</h2>
+<div class="page-header mb-4">
+    <h2>Riwayat Absensi Saya</h2>
+</div>
 
+<div class="card shadow-sm border-0">
 
-<div class="card employee-card border-0 shadow-sm">
     <div class="card-body">
-        <form method="GET" class="mb-3">
-
-            <input
-                type="date"
-                name="date"
-                value="{{ $date }}"
-                class="form-control"
-                style="max-width:250px">
-
-        </form>
 
         <div class="table-responsive">
-            <table class="table align-middle employee-table">
+
+            <table class="table history-table">
 
                 <thead>
                     <tr>
                         <th width="60">No</th>
-                        <th>Foto</th>
-                        <th>ID</th>
-                        <th>Nama</th>
-                        <th>Masuk</th>
-                        <th>Keluar</th>
-                        <th>Durasi</th>
+                        <th>Tanggal</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Keluar</th>
+                        <th>Durasi Kerja</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -39,34 +30,11 @@
                     @forelse($attendances as $attendance)
 
                     <tr>
+
                         <td>{{ $loop->iteration }}</td>
 
                         <td>
-
-                            @if($attendance->employee && $attendance->employee->photo)
-
-                            <img
-                                src="{{ asset('uploads/employees/'.$attendance->employee->photo) }}"
-                                width="50"
-                                height="50"
-                                class="employee-photo">
-
-                            @else
-
-                            <span class="badge bg-secondary">
-                                No Photo
-                            </span>
-
-                            @endif
-
-                        </td>
-
-                        <td>
-                            {{ $attendance->employee_id }}
-                        </td>
-
-                        <td>
-                            {{ $attendance->employee->name ?? '-' }}
+                            {{ \Carbon\Carbon::parse($attendance->attendance_date)->translatedFormat('d F Y') }}
                         </td>
 
                         <td>
@@ -78,9 +46,14 @@
                         </td>
 
                         <td>
-                            {{ $attendance->work_duration ?? 0 }} Jam
+                            @if($attendance->check_out)
+                            {{ number_format($attendance->work_duration,2) }} Jam
+                            @else
+                            -
+                            @endif
                         </td>
 
+                        <!-- Kolom Statyes -->
                         <td>
 
                             @if($attendance->check_in && !$attendance->check_out)
@@ -122,8 +95,8 @@
                     @empty
 
                     <tr>
-                        <td colspan="7" class="text-center">
-                            Belum ada data absensi
+                        <td colspan="6" class="text-center py-4">
+                            Belum ada riwayat absensi
                         </td>
                     </tr>
 
@@ -132,6 +105,12 @@
                 </tbody>
 
             </table>
+
+        </div>
+
+        <div class="mt-3">
+
+            {{ $attendances->links() }}
 
         </div>
 

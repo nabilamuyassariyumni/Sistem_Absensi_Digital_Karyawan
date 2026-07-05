@@ -37,15 +37,11 @@ Route::middleware('role:hr')->group(function () {
         ->name('monthly.report');
 
     Route::get(
-        '/monthly-report/excel',
-        [DashboardController::class, 'exportExcel']
-    )
-        ->name('monthly.report.excel');
+        '/monthly-report/export-csv',
+        [DashboardController::class, 'exportCsv']
+    )->name('monthly.report.excel');
 
-    Route::get(
-        '/monthly-report/pdf',
-        [DashboardController::class, 'exportPdf']
-    )
+    Route::get('/monthly-report/pdf', [DashboardController::class, 'exportPdf'])
         ->name('monthly.report.pdf');
 });
 
@@ -64,4 +60,7 @@ Route::middleware('role:employee')->group(function () {
 
     Route::get('/attendances-report', [AttendanceController::class, 'monthlyReport'])
         ->name('attendances.monthly-report');
+
+    Route::get('/attendance-history', [AttendanceController::class, 'history'])
+        ->name('attendances.history');
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendances;
 use App\Models\Employees;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DashboardController extends Controller
 {
@@ -86,5 +87,101 @@ class DashboardController extends Controller
             'reports',
             'month'
         ));
+    }
+
+    public function exportCsv(Request $request)
+    {
+        $month = $request->month ?? now()->format('Y-m');
+
+        $reports = Employees::with(['attendances' => function ($query) use ($month) {
+
+            $query->whereYear(
+                'attendance_date',
+                date('Y', strtotime($month))
+            )
+                ->whereMonth(
+                    'attendance_date',
+                    date('m', strtotime($month))
+                );
+        }])->get();
+
+        $filename = 'Laporan_Absensi_' . $month . '.csv';
+
+        return response()->streamDownload(function () use ($reports) {
+
+            $handle = fopen('php://output', 'w');
+
+            // Header CSV
+            fputcsv($handle, [
+                'Nama',
+                'Hadir',
+                'Terlambat',
+                'Izin',
+                'Alpha',
+                'Total Lembur (Jam)'
+            ]);
+
+            foreach ($reports as $employee) {
+
+                fputcsv($handle, [
+
+                    $employee->name,
+
+                    $employee->attendances
+                        ->where('status', 'present')
+                        ->count(),
+
+                    $employee->attendances
+                        ->where('status', 'late')
+                        ->count(),
+
+                    $employee->attendances
+                        ->where('status', 'leave')
+                        ->count(),
+
+                    $employee->attendances
+                        ->where('status', 'absent')
+                        ->count(),
+
+                    number_format(
+                        $employee->attendances->sum('overtime_duration'),
+                        2
+                    )
+
+                ]);
+            }
+
+            fclose($handle);
+        }, $filename);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $month = $request->month ?? now()->format('Y-m');
+
+        $reports = Employees::with([
+            'attendances' => function ($query) use ($month) {
+
+                $query->whereYear(
+                    'attendance_date',
+                    date('Y', strtotime($month))
+                )
+                    ->whereMonth(
+                        'attendance_date',
+                        date('m', strtotime($month))
+                    );
+            }
+        ])->get();
+
+        $pdf = Pdf::loadView(
+            'reports.pdf.monthly',
+            compact('reports', 'month')
+        );
+
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->download(
+            'Laporan_Absensi_' . $month . '.pdf'
+        );
     }
 }

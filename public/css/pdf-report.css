@@ -1,0 +1,182 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: DejaVu Sans, sans-serif;
+    font-size: 12px;
+    color: #1e293b;
+    padding: 25px 30px;
+}
+
+/* ===========================
+HEADER
+=========================== */
+
+.company-header {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.company-header table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.company-header td {
+    border: none;
+    vertical-align: top;
+}
+
+.logo-box {
+    width: 58px;
+    height: 58px;
+    background: #2563eb;
+    border-radius: 10px;
+    color: #fff;
+    text-align: center;
+    font-size: 30px;
+    line-height: 58px;
+    font-weight: bold;
+}
+
+.system-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #16255c;
+}
+
+.system-subtitle {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.company-info {
+    text-align: right;
+}
+
+.company-info h3 {
+    font-size: 16px;
+    color: #16255c;
+}
+
+.company-info p {
+    font-size: 11px;
+    color: #475569;
+    margin-top: 3px;
+}
+
+.blue-line {
+    border-top: 2px solid #2563eb;
+    margin: 18px 0;
+}
+
+/* ===========================
+TITLE
+=========================== */
+
+.report-title {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.report-title h2 {
+    font-size: 22px;
+    color: #16255c;
+    margin-bottom: 6px;
+}
+
+.report-title h3 {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+/* ===========================
+TABLE
+=========================== */
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #cbd5e1;
+    padding: 9px;
+}
+
+.report-table th {
+    background: #eef4ff;
+    color: #16255c;
+    font-weight: bold;
+    text-align: center;
+}
+
+.report-table td {
+    text-align: center;
+}
+
+.report-table td.text-left {
+    text-align: left;
+}
+
+.report-table tfoot td {
+    background: #f8fafc;
+    font-weight: bold;
+    color: #16255c;
+}
+
+/* ===========================
+NOTE
+=========================== */
+
+.note {
+    margin-top: 35px;
+    width: 60%;
+    float: left;
+}
+
+.note h4 {
+    margin-bottom: 8px;
+    color: #16255c;
+}
+
+.note p {
+    margin-bottom: 6px;
+    font-size: 11px;
+}
+
+/* ===========================
+SIGNATURE
+=========================== */
+
+.signature {
+    width: 35%;
+    float: right;
+    text-align: center;
+}
+
+.signature .space {
+    height: 70px;
+}
+
+.signature .line {
+    border-top: 1px solid #000;
+    width: 180px;
+    margin: auto;
+}
+
+/* ===========================
+FOOTER
+=========================== */
+
+.footer-line {
+    clear: both;
+    margin-top: 180px;
+    border-top: 2px solid #2563eb;
+}

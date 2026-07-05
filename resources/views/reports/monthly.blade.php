@@ -2,16 +2,14 @@
 
 @section('content')
 
-<div class="page-header mb-4">
-    <h2>Laporan Absensi Bulanan</h2>
-</div>
+<h2 class="page-title mb-4">Laporan Absensi Bulanan</h2>
 
-<div class="card shadow-sm border-0">
+<div class="card employee-card border-0 shadow-sm">
 
     <div class="card-body">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            
+
             <!-- Bulam -->
             <form method="GET" class="m-0">
 
@@ -29,8 +27,10 @@
 
                 <a href="{{ route('monthly.report.pdf', ['month' => $month]) }}"
                     class="btn-export btn-pdf">
+
                     <i class="bi bi-file-earmark-pdf"></i>
                     Export PDF
+
                 </a>
 
                 <a href="{{ route('monthly.report.excel', ['month' => $month]) }}"
@@ -45,10 +45,12 @@
 
         <div class="table-responsive">
 
-            <table class="table table-striped align-middle">
+            <table class="table align-middle employee-table">
 
                 <thead>
                     <tr>
+                        <th>No</th>
+                        <th>NIK</th>
                         <th>Nama</th>
                         <th>Hadir</th>
                         <th>Terlambat</th>
@@ -63,6 +65,14 @@
                     @foreach($reports as $employee)
 
                     <tr>
+
+                        <td>
+                            {{ $loop->iteration }}
+                        </td>
+
+                        <td>
+                            {{ $employee->employee_id }}
+                        </td>
 
                         <td>
                             {{ $employee->name }}

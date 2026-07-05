@@ -26,7 +26,24 @@
 
 </div>
 
-<!-- STATUS HARI INI -->
+<!-- Alert sukses dan error -->
+@if(session('error'))
+
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+
+@endif
+
+@if(session('success'))
+
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+
+@endif
+
+<!-- Card STATUS HARI INI -->
 
 <div class="employee-card mb-4">
 
@@ -39,6 +56,7 @@
         <span class="status-badge">
             {{ $todayAttendance?->status ?? 'Belum Absen' }}
         </span>
+
 
     </div>
 
@@ -213,57 +231,84 @@
         <h3 class="fw-bold mb-0">
             Riwayat minggu ini
         </h3>
-        <a href="#" class="text-decoration-none">
+        <a href="{{ route('attendances.history') }}" class="text-decoration-none">
             Lihat semua
         </a>
     </div>
 
-    <table class="table align-middle">
-        <thead>
-            <tr>
-                <th>Tanggal</th>
-                <th>Masuk</th>
-                <th>Keluar</th>
-                <th>Status</th>
-                <th>Lembur</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($attendances->take(7) as $attendance)
-            <tr>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table history-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Masuk</th>
+                            <th>Keluar</th>
+                            <th>Status</th>
+                            <th>Lembur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($attendances->take(7) as $attendance)
+                        <tr>
 
-                <td>
-                    {{ $attendance->attendance_date->format('d M') }}
-                </td>
+                            <td>
+                                {{ $attendance->attendance_date->format('d M') }}
+                            </td>
 
-                <td>{{ $attendance->check_in ?? '-' }}</td>
+                            <td>{{ $attendance->check_in ?? '-' }}</td>
 
-                <td>{{ $attendance->check_out ?? '-' }}</td>
+                            <td>{{ $attendance->check_out ?? '-' }}</td>
 
-                <td>
+                            <!-- Kolom Statyes -->
+                            <td>
 
-                    @if($attendance->status == 'present')
-                    <span class="badge-custom badge-hadir">
-                        Hadir
-                    </span>
+                                @if($attendance->check_in && !$attendance->check_out)
 
-                    @elseif($attendance->status == 'late')
-                    <span class="badge-custom badge-terlambat">
-                        Terlambat
-                    </span>
+                                <span class="status-badge status-working">
+                                    Sedang Bekerja
+                                </span>
 
-                    @endif
+                                @elseif($attendance->status == 'present')
 
-                </td>
+                                <span class="status-badge status-present">
+                                    Hadir
+                                </span>
 
-                <td>
-                    {{ $attendance->overtime_duration ?? 0 }} Jam
-                </td>
+                                @elseif($attendance->status == 'late')
 
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                                <span class="status-badge status-late">
+                                    Terlambat
+                                </span>
+
+                                @elseif($attendance->status == 'leave')
+
+                                <span class="status-badge status-leave">
+                                    Izin
+                                </span>
+
+                                @else
+
+                                <span class="status-badge status-absent">
+                                    Alpha
+                                </span>
+
+                                @endif
+
+                            </td>
+
+                            <td>
+                                {{ $attendance->overtime_duration ?? 0 }} Jam
+                            </td>
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

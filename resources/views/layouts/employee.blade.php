@@ -44,12 +44,11 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('attendances.index') }}"
-                        class="{{ request()->routeIs('attendances.*') ? 'active' : '' }}">
 
+                    <a href="{{ route('attendances.history') }}"
+                        class="{{ request()->routeIs('attendances.history') ? 'active' : '' }}">
                         <i class="bi bi-clock-history"></i>
                         Riwayat Absensi
-
                     </a>
                 </li>
 

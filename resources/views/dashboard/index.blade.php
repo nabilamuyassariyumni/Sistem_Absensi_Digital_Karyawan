@@ -70,113 +70,110 @@
 
     <!-- Absensi Hari Ini -->
     <div class="col-lg-12">
-
         <div class="card border-0 shadow-sm dashboard-panel">
-
             <div class="card-body">
-
                 <div class="d-flex justify-content-between mb-3">
-
                     <h5>Absensi Hari Ini</h5>
-
-                    <a href="#" class="small text-decoration-none">
+                    <a href="{{ route('attendances.admin') }}" class="small text-decoration-none">
                         Lihat Semua
                     </a>
-
                 </div>
 
-                <table class="table table-borderless">
+                <div class="card employee-card border-0 shadow-sm">
+                    <div class="table-responsive">
+                        <table class="table align-middle employee-table">
+                            <thead>
+                                <tr>
+                                    <th>NIK</th>
+                                    <th>Nama Karyawan</th>
+                                    <th>Jam Masuk</th>
+                                    <th>Jam Keluar</th>
+                                    <th>Durasi Kerja</th>
+                                    <th>Lembur</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
 
-                    <thead>
-                        <tr>
-                            <th>NIK</th>
-                            <th>Nama Karyawan</th>
-                            <th>Jam Masuk</th>
-                            <th>Jam Keluar</th>
-                            <th>Durasi Kerja</th>
-                            <th>Lembur</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                            <tbody>
 
-                    <tbody>
+                                @forelse($todayAttendances as $index => $attendance)
 
-                        @forelse($todayAttendances as $attendance)
+                                <tr>
+                                    <td>{{ $attendance->employee_id }}</td>
 
-                        <tr>
+                                    <td>
+                                        {{ $attendance->employee->name ?? '-' }}
+                                    </td>
 
-                            <td>{{ $attendance->employee_id }}</td>
+                                    <td>
+                                        {{ $attendance->check_in ?? '-' }}
+                                    </td>
 
-                            <td>
-                                {{ $attendance->employee->name ?? '-' }}
-                            </td>
+                                    <td>
+                                        {{ $attendance->check_out ?? '-' }}
+                                    </td>
 
-                            <td>
-                                {{ $attendance->check_in ?? '-' }}
-                            </td>
+                                    <td>
+                                        {{ $attendance->work_duration ?? 0 }} Jam
+                                    </td>
 
-                            <td>
-                                {{ $attendance->check_out ?? '-' }}
-                            </td>
+                                    <td>
+                                        {{ $attendance->overtime_duration ?? 0 }} Jam
+                                    </td>
 
-                            <td>
-                                {{ $attendance->work_duration ?? 0 }} Jam
-                            </td>
+                                    <td>
 
-                            <td>
-                                {{ $attendance->overtime_duration ?? 0 }} Jam
-                            </td>
+                                        @if($attendance->check_in && !$attendance->check_out)
 
-                            <td>
+                                        <span class="status-badge status-working">
+                                            Sedang Bekerja
+                                        </span>
 
-                                @if($attendance->status == 'present')
+                                        @elseif($attendance->status == 'present')
 
-                                <span class="badge bg-success">
-                                    Hadir
-                                </span>
+                                        <span class="status-badge status-present">
+                                            Hadir
+                                        </span>
 
-                                @elseif($attendance->status == 'late')
+                                        @elseif($attendance->status == 'late')
 
-                                <span class="badge bg-warning text-dark">
-                                    Terlambat
-                                </span>
+                                        <span class="status-badge status-late">
+                                            Terlambat
+                                        </span>
 
-                                @elseif($attendance->status == 'leave')
+                                        @elseif($attendance->status == 'leave')
 
-                                <span class="badge bg-info">
-                                    Izin
-                                </span>
+                                        <span class="status-badge status-leave">
+                                            Izin
+                                        </span>
 
-                                @else
+                                        @else
 
-                                <span class="badge bg-danger">
-                                    Tidak Hadir
-                                </span>
+                                        <span class="status-badge status-absent">
+                                            Alpha
+                                        </span>
 
-                                @endif
+                                        @endif
 
-                            </td>
+                                    </td>
+                                </tr>
 
-                        </tr>
+                                @empty
 
-                        @empty
+                                <tr>
+                                    <td colspan="8" class="text-center py-4">
+                                        Belum ada data absensi hari ini
+                                    </td>
+                                </tr>
 
-                        <tr>
-                            <td colspan="7" class="text-center py-4">
-                                Belum ada data absensi hari ini
-                            </td>
-                        </tr>
+                                @endforelse
 
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
 
     <!-- Grafik -->

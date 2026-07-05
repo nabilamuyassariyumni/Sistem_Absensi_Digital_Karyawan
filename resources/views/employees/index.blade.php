@@ -19,11 +19,8 @@
 </div>
 
 <div class="card employee-card border-0 shadow-sm">
-
     <div class="card-body">
-
         <div class="table-responsive">
-
             <table class="table align-middle employee-table">
 
                 <thead>

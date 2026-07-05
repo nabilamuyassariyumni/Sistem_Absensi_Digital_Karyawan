@@ -1,69 +1,177 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 
 <head>
+
+    <meta charset="UTF-8">
     <title>Login SIAD</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+
 </head>
 
-<body class="bg-light">
+<body class="login-page">
 
-    <div class="container">
+    <div class="login-card">
 
-        <div class="row justify-content-center mt-5">
+        <div class="login-logo">
 
-            <div class="col-md-4">
+            <div class="logo-box">
+                <i class="bi bi-people"></i>
+            </div>
 
-                <div class="card shadow">
+        </div>
 
-                    <div class="card-header">
-                        <h4 class="text-center">
-                            Login SIAD
-                        </h4>
-                    </div>
+        <h1>Login SIAD</h1>
 
-                    <div class="card-body">
+        <p class="subtitle">
+            Sistem Absensi Digital
+        </p>
 
-                        <form action="{{ route('login.post') }}" method="POST">
+        <div class="title-divider"></div>
 
-                            @csrf
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
 
-                            <div class="mb-3">
-                                <label>Email</label>
+        <form method="POST" action="{{ route('login') }}">
 
-                                <input
-                                    type="email"
-                                    name="email"
-                                    class="form-control"
-                                    required>
-                            </div>
+            @csrf
 
-                            <div class="mb-3">
-                                <label>Password</label>
+            <div class="mb-4">
 
-                                <input
-                                    type="password"
-                                    name="password"
-                                    class="form-control"
-                                    required>
-                            </div>
+                <label>Email</label>
 
-                            <button type="submit" class="btn btn-primary w-100">
-                                Login
-                            </button>
+                <div class="input-wrapper">
 
-                        </form>
+                    <i class="bi bi-envelope"></i>
 
-                    </div>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Masukkan email Anda"
+                        required>
 
                 </div>
 
             </div>
 
+            <div class="mb-4">
+
+                <label>Password</label>
+
+                <div class="input-wrapper">
+
+                    <i class="bi bi-lock"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Masukkan password Anda"
+                        required>
+
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        class="eye-btn">
+
+                        <i class="bi bi-eye"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="login-option">
+
+                <div>
+
+                    <input
+                        type="checkbox"
+                        name="remember">
+
+                    <span>Ingat saya</span>
+
+                </div>
+
+                <a href="#">
+                    Lupa password?
+                </a>
+
+            </div>
+
+            <button type="submit" class="btn-login">
+
+                Login
+
+            </button>
+
+        </form>
+
+        <div class="divider">
+
+            <span>atau masuk dengan</span>
+
+        </div>
+
+        <a href="#" class="btn-admin">
+
+            <i class="bi bi-shield-check"></i>
+
+            Login sebagai HR / Admin
+
+        </a>
+
+        <div class="footer-text">
+
+            Belum punya akun?
+
+            <a href="#">
+                Hubungi Administrator Anda
+            </a>
+
         </div>
 
     </div>
+
+    <script>
+        const togglePassword =
+            document.getElementById('togglePassword');
+
+        const password =
+            document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+
+            if (password.type === 'password') {
+
+                password.type = 'text';
+
+                this.innerHTML =
+                    '<i class="bi bi-eye-slash"></i>';
+
+            } else {
+
+                password.type = 'password';
+
+                this.innerHTML =
+                    '<i class="bi bi-eye"></i>';
+
+            }
+
+        });
+    </script>
 
 </body>
 
