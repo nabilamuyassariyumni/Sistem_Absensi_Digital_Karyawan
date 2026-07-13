@@ -72,6 +72,14 @@ class AttendanceController extends Controller
             $officeLng
         );
 
+        // dd([
+        //     'user_lat' => $request->latitude,
+        //     'user_lng' => $request->longitude,
+        //     'office_lat' => $officeLat,
+        //     'office_lng' => $officeLng,
+        //     'distance' => $distance,
+        // ]);
+
         if ($distance > 6000) {
 
             return back()->with(
@@ -109,6 +117,23 @@ class AttendanceController extends Controller
             return back()->with('error', 'Anda sudah Check Out');
         }
 
+        // VALIDASI LOKASI CHECK OUT
+        $officeLat = -0.914840;
+        $officeLng = 100.466690;
+
+        $distance = $this->calculateDistance(
+            $request->latitude,
+            $request->longitude,
+            $officeLat,
+            $officeLng
+        );
+
+        if ($distance > 6000) {
+            return back()->with(
+                'error',
+                'Anda berada di luar radius kantor (6 KM)'
+            );
+        }
 
         $checkIn = Carbon::parse($attendance->check_in);
         $checkOut = Carbon::now();

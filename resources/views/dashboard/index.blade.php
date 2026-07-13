@@ -177,7 +177,7 @@
     </div>
 
     <!-- Grafik -->
-    <div class="col-lg-12">
+    <!-- <div class="col-lg-12">
         <div class="card border-0 shadow-sm dashboard-panel">
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
@@ -194,7 +194,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 @endsection

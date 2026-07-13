@@ -5,11 +5,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDashboardController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
 Route::get('/login', [AuthController::class, 'loginForm'])
     ->name('login');
@@ -63,4 +68,7 @@ Route::middleware('role:employee')->group(function () {
 
     Route::get('/attendance-history', [AttendanceController::class, 'history'])
         ->name('attendances.history');
+
+    Route::get('/profile', [ProfileController::class, 'index'])
+        ->name('employee.profile');
 });

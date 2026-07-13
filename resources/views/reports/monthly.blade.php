@@ -33,11 +33,11 @@
 
                 </a>
 
-                <a href="{{ route('monthly.report.excel', ['month' => $month]) }}"
+                <!-- <a href="{{ route('monthly.report.excel', ['month' => $month]) }}"
                     class="btn-export btn-excel">
                     <i class="bi bi-file-earmark-excel"></i>
                     Export Excel
-                </a>
+                </a> -->
 
             </div>
 

@@ -3,50 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-
     <link rel="stylesheet" href="{{ public_path('css/pdf-report.css') }}">
-
 </head>
 
 <body>
-
     <!-- HEADER -->
-
     <div class="company-header">
-
         <table>
-
             <tr>
-
-                <td width="70">
-
-                    <div class="logo-box">
-                        <i class="bi bi-people "></i>
-                    </div>
-
-                </td>
-
                 <td>
-
                     <div class="system-title">
                         SIAD - SISTEM ABSENSI DIGITAL
                     </div>
-
                     <div class="system-subtitle">
                         Laporan Absensi & Rekap Lembur
                     </div>
-
                 </td>
 
                 <td class="company-info">
-
-                    <h3>PT. Maju Bersama</h3>
-
-                    <p>Jl. Merdeka No.123, Jakarta Selatan</p>
-
-                    <p>Telp : (021)1234567</p>
-
-                    <p>Email : hr@maju-bersama.com</p>
+                    <h3>Politeknik Negeri Padang</h3>
+                    <p>Kampus Politeknik Negeri Padang<br>Limau Manis Kecamatan Pauh<br>Kota Padang Provinsi Sumatera Barat<br>25164</p>
+                    <p>Telp : 0751-72590</p>
+                    <p>Email : info@pnp.ac.id</p>
 
                 </td>
 

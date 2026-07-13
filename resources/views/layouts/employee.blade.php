@@ -53,7 +53,8 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('employee.profile') }}"
+                        class="{{ request()->routeIs('employee.profile') ? 'active' : '' }}">
                         <i class="bi bi-person"></i>
                         Profil Saya
                     </a>

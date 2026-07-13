@@ -14,93 +14,121 @@
 
     <div class="card-body">
 
-        <div class="row">
+        <div class="row g-4">
 
-            <div class="col-md-3 text-center">
+            <!-- FOTO KARYAWAN -->
+            <div class="col-lg-4">
 
-                @if($employee->photo)
-                <img
-                    src="{{ asset('uploads/employees/'.$employee->photo) }}"
-                    class="img-fluid rounded shadow"
-                    alt="Foto Karyawan">
-                @else
-                <img
-                    src="https://via.placeholder.com/250x250?text=No+Photo"
-                    class="img-fluid rounded shadow"
-                    alt="No Photo">
-                @endif
+                <div class="employee-profile-card text-center">
+
+                    @if($employee->photo)
+                    <img
+                        src="{{ asset('uploads/employees/'.$employee->photo) }}"
+                        class="employee-detail-photo"
+                        alt="Foto Karyawan">
+                    @else
+                    <img
+                        src="https://via.placeholder.com/250x250?text=No+Photo"
+                        class="employee-detail-photo"
+                        alt="No Photo">
+                    @endif
+
+                    <h4 class="mt-3 mb-1 fw-bold">
+                        {{ $employee->name }}
+                    </h4>
+
+                    <p class="text-muted mb-2">
+                        {{ $employee->position ?? '-' }}
+                    </p>
+
+                    <p class="text-muted">
+                        {{ $employee->department ?? '-' }}
+                    </p>
+
+                    @if($employee->status == 'active')
+                    <span class="badge bg-success px-3 py-2">
+                        Active
+                    </span>
+                    @else
+                    <span class="badge bg-danger px-3 py-2">
+                        Inactive
+                    </span>
+                    @endif
+
+                </div>
 
             </div>
 
-            <div class="col-md-9">
+            <!-- INFORMASI -->
+            <div class="col-lg-8">
 
-                <table class="table table-bordered">
+                <div class="row g-3">
 
-                    <tr>
-                        <th width="200">ID Karyawan</th>
-                        <td>{{ $employee->employee_id }}</td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>ID Karyawan</span>
+                            <h6>{{ $employee->employee_id }}</h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>Nama</th>
-                        <td>{{ $employee->name }}</td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>Email</span>
+                            <h6>{{ $employee->email ?? '-' }}</h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>Departemen</th>
-                        <td>{{ $employee->department ?? '-' }}</td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>No HP</span>
+                            <h6>{{ $employee->phone ?? '-' }}</h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>Jabatan</th>
-                        <td>{{ $employee->position ?? '-' }}</td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>Departemen</span>
+                            <h6>{{ $employee->department ?? '-' }}</h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>Email</th>
-                        <td>{{ $employee->email ?? '-' }}</td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>Jabatan</span>
+                            <h6>{{ $employee->position ?? '-' }}</h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>No HP</th>
-                        <td>{{ $employee->phone ?? '-' }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Tanggal Bergabung</th>
-                        <td>
-                            {{ $employee->join_date
-                                ? \Carbon\Carbon::parse($employee->join_date)->format('d-m-Y')
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>Tanggal Bergabung</span>
+                            <h6>
+                                {{ $employee->join_date
+                                ? \Carbon\Carbon::parse($employee->join_date)->translatedFormat('d F Y')
                                 : '-' }}
-                        </td>
-                    </tr>
+                            </h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>Status</th>
-                        <td>
-                            @if($employee->status == 'active')
-                            <span class="badge bg-success">
-                                Active
-                            </span>
-                            @else
-                            <span class="badge bg-danger">
-                                Inactive
-                            </span>
-                            @endif
-                        </td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>Dibuat Pada</span>
+                            <h6>
+                                {{ $employee->created_at->format('d-m-Y H:i') }}
+                            </h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>Dibuat Pada</th>
-                        <td>{{ $employee->created_at->format('d-m-Y H:i') }}</td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <span>Terakhir Diubah</span>
+                            <h6>
+                                {{ $employee->updated_at->format('d-m-Y H:i') }}
+                            </h6>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <th>Terakhir Diubah</th>
-                        <td>{{ $employee->updated_at->format('d-m-Y H:i') }}</td>
-                    </tr>
-
-                </table>
+                </div>
 
             </div>
 

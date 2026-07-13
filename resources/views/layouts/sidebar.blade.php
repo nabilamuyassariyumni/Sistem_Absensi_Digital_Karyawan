@@ -71,14 +71,6 @@
                         Rekap Lembur
                     </a>
                 </li>
-
-                <li>
-                    <a href="#">
-                        <i class="bi bi-gear"></i>
-                        Pengaturan
-                    </a>
-                </li>
-
             </ul>
 
             <div class="sidebar-footer">

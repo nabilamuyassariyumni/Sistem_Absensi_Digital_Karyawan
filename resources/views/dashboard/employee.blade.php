@@ -6,7 +6,7 @@
 
     <div>
         <h2 class="fw-bold mb-1">
-            Selamat pagi, {{ auth()->user()->name }}
+            Selamat Datang, {{ auth()->user()->name }}
         </h2>
 
         <p class="text-muted mb-0">
@@ -119,6 +119,7 @@
 
         <input type="hidden" name="latitude" id="latitude">
         <input type="hidden" name="longitude" id="longitude">
+        <p id="debug-lokasi" class="text-danger mt-2"></p>
 
         <button type="submit" class="btn btn-checkout w-100 mt-4 blue">
 
@@ -312,15 +313,23 @@
 </div>
 
 <script>
-    navigator.geolocation.getCurrentPosition(function(position) {
+    console.log('SCRIPT GEOLOCATION JALAN');
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            console.log('GPS BERHASIL');
+            console.log(position);
+            document.getElementById('latitude').value =
+                position.coords.latitude;
+            document.getElementById('longitude').value =
+                position.coords.longitude;
+        },
 
-        document.getElementById('latitude').value =
-            position.coords.latitude;
-
-        document.getElementById('longitude').value =
-            position.coords.longitude;
-
-    });
+        function(error) {
+            console.log('GPS GAGAL');
+            console.log(error);
+            alert('GPS tidak diizinkan atau gagal dideteksi');
+        }
+    );
 </script>
 
 @endsection
